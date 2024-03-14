@@ -50,6 +50,9 @@ public class Application {
         magazzino.add(undici);
         magazzino.add(dodici);
 
+        System.out.println("---------PRODOTTI IN MAGAZZINO----------");
+        System.out.println(magazzino);
+
         Supplier<Integer> randomUser = () -> {
             Random rndm = new Random();
             return rndm.nextInt(1, 11);
@@ -99,6 +102,15 @@ public class Application {
         totOgniCliente.forEach((cliente, totale) -> {
             System.out.println("CLIENTE: " + cliente + ", TOTALE SPESO: " + totale);
         });
+
+        System.out.println("---------PRODOTTI PIù COSTOSI IN MAGAZZINO----------");
+        List<Product> piùCostosi = magazzino.stream().filter(product -> product.getPrice()
+                        > magazzino.stream().collect(Collectors.averagingDouble(Product::getPrice)))
+                .toList();
+
+        piùCostosi.forEach(product -> log.info(String.valueOf(product)));
+
+
         sc.close();
 
     }

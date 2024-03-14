@@ -8,7 +8,7 @@ public class Order {
 
     private String status;
 
-    private Product product;
+    private Product products;
 
     private Customer customer;
 
@@ -19,12 +19,16 @@ public class Order {
     public Order(String status, Customer customer, Product product, LocalDate orderDate, LocalDate deliveryDate) {
         Random idd = new Random();
         this.id = idd.nextInt(10000, 99000);
-        this.product = product;
+        this.products = product;
         this.status = status;
         this.customer = customer;
         this.orderDate = orderDate;
         this.deliveryDate = deliveryDate;
     }
+
+//    public double getTotal() {
+//        return this.products.stream().mapToDouble(Product::getPrice).sum();
+//    }
 
     public long getId() {
         return id;
@@ -35,7 +39,7 @@ public class Order {
     }
 
     public Product getProduct() {
-        return product;
+        return this.products;
     }
 
     public Customer getCustomer() {
@@ -55,7 +59,7 @@ public class Order {
         return "Order{" +
                 "id=" + id +
                 ", status='" + status + '\'' +
-                ", product=" + product +
+                ", product=" + products +
                 ", customer=" + customer +
                 ", orderDate=" + orderDate +
                 ", deliveryDate=" + deliveryDate +

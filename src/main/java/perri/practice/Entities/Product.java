@@ -19,6 +19,9 @@ public class Product {
         this.price = price;
     }
 
+    public double getPrice() {
+        return this.price;
+    }
 
     @Override
     public String toString() {
