@@ -76,6 +76,7 @@ public class Application {
                         cliente -> generaOrdiniCasualiPerCliente(cliente)
                 ));
 
+        System.out.println("-----------ORDINI DI VARI CLIENTI-------------");
         ordiniClienti.forEach((cliente, ordini) -> {
             System.out.println("CLIENTE: " + cliente);
             if (ordini.isEmpty()) {
@@ -86,6 +87,18 @@ public class Application {
             }
         });
 
+
+        Map<Customer, Double> totOgniCliente = new HashMap<>();
+        ordiniClienti.forEach((cliente, ordini) -> {
+            double totale = ordini.stream()
+                    .mapToDouble(ordine -> ordine.getProduct().price).sum();
+            totOgniCliente.put(cliente, totale);
+        });
+
+        System.out.println("---------TOT PER OGNI CLIENTE ----------");
+        totOgniCliente.forEach((cliente, totale) -> {
+            System.out.println("CLIENTE: " + cliente + ", TOTALE SPESO: " + totale);
+        });
         sc.close();
 
     }
