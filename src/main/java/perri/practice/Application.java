@@ -107,8 +107,17 @@ public class Application {
         List<Product> piùCostosi = magazzino.stream().filter(product -> product.getPrice()
                         > magazzino.stream().collect(Collectors.averagingDouble(Product::getPrice)))
                 .toList();
-
         piùCostosi.forEach(product -> log.info(String.valueOf(product)));
+
+        System.out.println("---------MEDIA DEGLI IMPORTI DEGLI ORDINI----------");
+        double mediaImportiOrdini = ordiniClienti.values().stream().flatMap(List::stream) // Trasformo Stream<List<Order>> in Stream<Order>
+                .mapToDouble(order -> order.getProduct().price).average()
+                .orElse(0);
+
+        List<Double> mediaOrder = new ArrayList<>();
+        mediaOrder.add(mediaImportiOrdini);
+
+        log.info(mediaOrder.toString());
 
 
         sc.close();
