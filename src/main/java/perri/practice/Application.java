@@ -36,7 +36,7 @@ public class Application {
         Product undici = new Product("BOXER", "BOYS", 8.20);
         Product dodici = new Product("XXX", "BOYS", 22.4);
 
-        List<Product> magazzino = new ArrayList<>();
+
         magazzino.add(uno);
         magazzino.add(due);
         magazzino.add(tre);
@@ -73,50 +73,41 @@ public class Application {
         Map<Customer, List<Order>> ordiniClienti = clientiList.stream()
                 .collect(Collectors.toMap(
                         cliente -> cliente,
-                        order -> generaOrdiniCasualiPerCliente(order)
+                        cliente -> generaOrdiniCasualiPerCliente(cliente)
                 ));
 
         ordiniClienti.forEach((cliente, ordini) -> {
-            System.out.println("CLIENTE: " + cliente + " ha " + ordini.size() + " ordini.");
-            ordini.forEach(ordine -> System.out.println(" ORDINE: " + ordine));
+            System.out.println("CLIENTE: " + cliente);
+            if (ordini.isEmpty()) {
+                System.out.println(" Nessun ordine per questo cliente.");
+            } else {
+                ordini.forEach(ordine -> log.info("Generato ordine: {}", ordine));
+
+            }
         });
-
-
-        //////////////
-        System.out.println("ordini " + ordiniClienti);
-
-        if (!magazzino.isEmpty()) {
-            Product prodottoCasuale = magazzino.get(random.nextInt(magazzino.size()));
-            Order ordine = new Order(
-                    "StatoCasuale",
-                    clientiList.get(0),
-                    prodottoCasuale,
-                    LocalDate.now().minusDays(5),
-                    LocalDate.now().plusDays(5)
-            );
-            System.out.println(ordine);
-        }
-
-        //////////////
 
         sc.close();
 
     }
 
     private static List<Order> generaOrdiniCasualiPerCliente(Customer cliente) {
-        if (magazzino.isEmpty() || cliente == null) {
+        if (magazzino.isEmpty()) {
             return Collections.emptyList();
         }
-
-        Product prodottoCasuale = magazzino.get(random.nextInt(magazzino.size()));
-        Order ordine = new Order(
-                "StatoCasuale",
-                cliente,
-                prodottoCasuale,
-                LocalDate.now().minusDays(5),
-                LocalDate.now().plusDays(5)
-        );
-        return Collections.singletonList(ordine);
+        int numOrdini = random.nextInt(3) + 1;
+        List<Order> ordiniPerCliente = new ArrayList<>();
+        for (int i = 0; i < numOrdini; i++) {
+            Product prodottoCasuale = magazzino.get(random.nextInt(magazzino.size()));
+            Order ordine = new Order(
+                    "StatoCasuale",
+                    cliente,
+                    prodottoCasuale,
+                    LocalDate.now().minusDays(random.nextInt(30) + 1),
+                    LocalDate.now().plusDays(random.nextInt(30) + 1)
+            );
+            ordiniPerCliente.add(ordine);
+        }
+        return ordiniPerCliente;
     }
 
 
