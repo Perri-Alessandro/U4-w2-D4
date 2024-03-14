@@ -60,7 +60,7 @@ public class Application {
 
         Supplier<Customer> userSupplier = () -> {
             Faker faker = new Faker(Locale.ITALY);
-            return new Customer(faker.name().fullName());
+            return new Customer(faker.pokemon().name());
         };
 
         int userCount = randomUser.get();
@@ -119,6 +119,13 @@ public class Application {
 
         log.info(mediaOrder.toString());
 
+        System.out.println("---------PRODOTTI RAGGRUPPATI PER CATEGORIA, CON LA SOMMA DI OGNUNA----------");
+        Map<String, List<Product>> prodCategorySum = magazzino.stream()
+                .collect(Collectors.groupingBy(product -> product.category));
+        prodCategorySum.forEach((cat, prod) -> {
+            double sommaCat = prod.stream().mapToDouble(Product::getPrice).sum();
+            System.out.println("CATEGORY: " + cat + " - " + " SOMMA DEI COSTI DEI PRODOTTI: " + sommaCat + " - " + " PRODUCTS: " + prod);
+        });
 
         sc.close();
 
